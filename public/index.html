@@ -23749,13 +23749,8 @@ document.addEventListener("click",e=>{const t=e.target.closest?.("[data-play-ans
         return {response,result,text};
       }
 
-      let attempt=await sendSyncAction("patch");
-
-      // Jalur darurat: jika split-table gagal, simpan perubahan ke kelas7mit_state.
-      if(!attempt.response.ok||attempt.result?.ok===false){
-        console.warn("Split sync gagal, mencoba fallback STATE:",attempt.result?.message||attempt.text);
-        attempt=await sendSyncAction("state");
-      }
+      // Hanya tabel kelas7mit_* (tanpa fallback STATE). Jika gagal, tampilkan pesan error asli.
+      const attempt=await sendSyncAction("patch");
 
       if(!attempt.response.ok||attempt.result?.ok===false){
         throw new Error(attempt.result?.message||attempt.text||`HTTP ${attempt.response.status}`);
@@ -23852,6 +23847,7 @@ document.addEventListener("click",e=>{const t=e.target.closest?.("[data-play-ans
   }
 
   if(typeof loadJsonState==="function")loadJsonState=reliableLoad;
+  if(typeof fetchJsonState==="function")fetchJsonState=async()=>fetchCentralRow();
   if(typeof loadStudentJson==="function")loadStudentJson=async()=>reliableLoad({showToast:false});
 
   prepareNotificationChannel=async function(){
