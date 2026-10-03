@@ -29408,5 +29408,79 @@ html.k7-lite .cm3d-pop{animation:none}
 .dues-amount-hint.error{color:#b42318;font-weight:800}
 .dues-installment.done .dues-amount-quick{display:none}
 </style>
+<style id="k7-cmdk-v146">
+/* ===== V146 · Pencarian cepat (Ctrl/⌘ + K) + poles ===== */
+.k7-cmdk-btn{display:flex;align-items:center;gap:9px;width:100%;margin:0 0 10px;min-height:40px;padding:0 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:inherit;font:inherit;font-size:12px;font-weight:800;cursor:pointer;text-align:left;transition:background .15s,transform .12s}
+.k7-cmdk-btn:hover{background:rgba(255,255,255,.18)}
+.k7-cmdk-btn svg{width:15px;height:15px;opacity:.85}
+.k7-cmdk-btn kbd{margin-left:auto;font:inherit;font-size:10px;opacity:.75;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:1px 6px}
+.k7-cmdk{position:fixed;inset:0;z-index:2147483100;display:none;align-items:flex-start;justify-content:center;padding:10vh 14px 14px;background:rgba(15,23,42,.45)}
+.k7-cmdk.open{display:flex;animation:k7CmdIn .15s ease both}
+@keyframes k7CmdIn{from{opacity:0}to{opacity:1}}
+.k7-cmdk-box{width:min(560px,100%);max-height:72vh;display:flex;flex-direction:column;border-radius:20px;background:var(--surface,#fff);color:var(--ink,#172033);border:1px solid var(--line,#e3e8f0);box-shadow:0 30px 80px rgba(15,23,42,.35);overflow:hidden}
+.k7-cmdk-in{display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--line,#e3e8f0)}
+.k7-cmdk-in input{flex:1;min-height:54px;border:0;outline:0;background:transparent;color:inherit;font:inherit;font-size:15px;transform:none!important}
+.k7-cmdk-in svg{width:18px;height:18px;color:var(--muted,#667085)}
+.k7-cmdk-list{overflow:auto;padding:8px}
+.k7-cmdk-item{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:12px;background:transparent;color:inherit;font:inherit;font-size:13px;font-weight:750;cursor:pointer;text-align:left}
+.k7-cmdk-item.on,.k7-cmdk-item:hover{background:color-mix(in srgb,var(--blue,#2563eb) 12%,transparent)}
+.k7-cmdk-item svg{width:16px;height:16px;color:var(--muted,#667085);flex:0 0 auto}
+.k7-cmdk-item small{margin-left:auto;color:var(--muted,#667085);font-size:10px;font-weight:700}
+.k7-cmdk-empty{padding:26px;text-align:center;color:var(--muted,#667085);font-size:12px}
+.k7-cmdk-foot{display:flex;gap:14px;padding:9px 16px;border-top:1px solid var(--line,#e3e8f0);color:var(--muted,#667085);font-size:10px}
+/* poles ringan */
+@media(max-width:640px){
+  .page>.topbar .title h2{font-size:clamp(20px,6vw,26px)!important;line-height:1.15}
+  .student-access-banner{padding:11px 13px!important}
+  .student-access-banner p{display:none}
+}
+
+</style>
+<script id="k7-cmdk-v146-js">
+/* V146 · Pencarian cepat: Ctrl/⌘+K atau tombol "Cari menu". Mencari semua menu portal. */
+(()=>{
+  'use strict';
+  if(window.__k7cmdk)return;window.__k7cmdk=1;
+  const $=(s,r=document)=>r.querySelector(s);
+  const norm=v=>String(v||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const nav=$('#nav');if(!nav)return;
+  const box=document.createElement('div');
+  box.className='k7-cmdk';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','Pencarian cepat');
+  box.innerHTML=`<div class="k7-cmdk-box"><div class="k7-cmdk-in"><i data-lucide="search"></i><input type="search" placeholder="Cari menu… (mis. keuangan, denah, catatan)" autocomplete="off" aria-label="Cari menu"></div><div class="k7-cmdk-list" role="listbox"></div><div class="k7-cmdk-foot"><span>↑↓ pilih</span><span>Enter buka</span><span>Esc tutup</span></div></div>`;
+  document.body.appendChild(box);
+  const input=$('input',box),list=$('.k7-cmdk-list',box);
+  let items=[],sel=0;
+  const collect=()=>[...nav.querySelectorAll('button[data-page]')].filter(b=>b.offsetParent!==null||true).map(b=>({page:b.dataset.page,label:b.textContent.replace(/\s+/g,' ').trim().replace(/\bBeta\b/,'').trim(),icon:b.querySelector('[data-lucide]')?.getAttribute('data-lucide')||'arrow-right'}));
+  const score=(q,l)=>{l=norm(l);if(!q)return 1;if(l.startsWith(q))return 3;if(l.includes(q))return 2;let i=0;for(const ch of l){if(ch===q[i])i++;if(i===q.length)return 1}return 0};
+  function render(){
+    const q=norm(input.value.trim()),all=collect();
+    items=all.map(x=>({...x,s:score(q,x.label)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+    if(sel>=items.length)sel=0;
+    list.innerHTML=items.length?items.map((x,i)=>`<button class="k7-cmdk-item ${i===sel?'on':''}" data-i="${i}" role="option"><i data-lucide="${x.icon}"></i>${x.label}<small>Buka</small></button>`).join(''):'<div class="k7-cmdk-empty">Tidak ada menu yang cocok.</div>';
+    try{window.lucide?.createIcons?.()}catch{}
+    list.querySelector('.on')?.scrollIntoView({block:'nearest'});
+  }
+  function open(){box.classList.add('open');input.value='';sel=0;render();setTimeout(()=>input.focus(),20)}
+  function close(){box.classList.remove('open')}
+  function pick(i){const it=items[i];if(!it)return;close();const b=nav.querySelector(`button[data-page="${it.page}"]`);b?.click()}
+  input.addEventListener('input',()=>{sel=0;render()});
+  input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(items.length-1,sel+1);render()}else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(0,sel-1);render()}else if(e.key==='Enter'){e.preventDefault();pick(sel)}else if(e.key==='Escape'){close()}});
+  list.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)pick(+b.dataset.i)});
+  box.addEventListener('click',e=>{if(e.target===box)close()});
+  document.addEventListener('keydown',e=>{
+    const typing=/^(input|textarea|select)$/i.test(e.target?.tagName||'')||e.target?.isContentEditable;
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();box.classList.contains('open')?close():open()}
+    else if(e.key==='/'&&!typing&&!box.classList.contains('open')){e.preventDefault();open()}
+    else if(e.key==='Escape'&&box.classList.contains('open'))close();
+  });
+  const btn=document.createElement('button');
+  btn.type='button';btn.className='k7-cmdk-btn';btn.innerHTML='<i data-lucide="search"></i> Cari menu <kbd>Ctrl K</kbd>';
+  btn.addEventListener('click',open);
+  nav.before(btn);
+  try{window.lucide?.createIcons?.()}catch{}
+  window.k7Cmdk={open,close};
+})();
+
+</script>
 </body>
 </html>
