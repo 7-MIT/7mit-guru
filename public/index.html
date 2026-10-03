@@ -17625,6 +17625,7 @@ function setCurrentLessonSubject(value){
 
   function startPrioritySummaryAutoSlide(){
     clearInterval(prioritySummaryTimer);
+    if(window.k7Motion&&window.k7Motion.reduced())return;
     const rows=getImportantAnnouncements();
     if(rows.length<2)return;
     prioritySummaryTimer=setInterval(()=>{
@@ -27502,7 +27503,7 @@ function telkomCreatePeer(remoteKey){
     '.quiz-exam-top','.quiz-submit-bar','.files-toolbar','.calendar-toolbar','.toolbar','.tool-group','.control-group'
   ].join(',');
   const fine=matchMedia('(pointer:fine)').matches;
-  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches||root.classList.contains('k7-reduce');
   if(!fine||reduced) return;
   let raf=0,last=null;
   document.addEventListener('pointermove',event=>{
@@ -28946,6 +28947,235 @@ html.k7-lite .page>*{animation:none!important}
 /* Libur nasional Indonesia (format .ics, dibaca oleh agendaCalendarParseICS). Ganti isi string ini dengan file .ics resmi bila perlu. */
 window.K7_HOLIDAYS_ICS="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//7MIT//Libur Nasional//ID\nBEGIN:VEVENT\nUID:libur-20260101@7mit.org\nDTSTART;VALUE=DATE:20260101\nSUMMARY:Tahun Baru 2026 Masehi\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260116@7mit.org\nDTSTART;VALUE=DATE:20260116\nSUMMARY:Isra Mikraj Nabi Muhammad SAW\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260216@7mit.org\nDTSTART;VALUE=DATE:20260216\nSUMMARY:Cuti Bersama Tahun Baru Imlek\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260217@7mit.org\nDTSTART;VALUE=DATE:20260217\nSUMMARY:Tahun Baru Imlek 2577 Kongzili\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260318@7mit.org\nDTSTART;VALUE=DATE:20260318\nSUMMARY:Cuti Bersama Hari Suci Nyepi\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260319@7mit.org\nDTSTART;VALUE=DATE:20260319\nSUMMARY:Hari Suci Nyepi Tahun Baru Saka 1948\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260320@7mit.org\nDTSTART;VALUE=DATE:20260320\nSUMMARY:Cuti Bersama Idul Fitri 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260321@7mit.org\nDTSTART;VALUE=DATE:20260321\nSUMMARY:Idul Fitri 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260322@7mit.org\nDTSTART;VALUE=DATE:20260322\nSUMMARY:Idul Fitri 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260323@7mit.org\nDTSTART;VALUE=DATE:20260323\nSUMMARY:Cuti Bersama Idul Fitri 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260324@7mit.org\nDTSTART;VALUE=DATE:20260324\nSUMMARY:Cuti Bersama Idul Fitri 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260403@7mit.org\nDTSTART;VALUE=DATE:20260403\nSUMMARY:Wafat Yesus Kristus\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260405@7mit.org\nDTSTART;VALUE=DATE:20260405\nSUMMARY:Kebangkitan Yesus Kristus (Paskah)\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260501@7mit.org\nDTSTART;VALUE=DATE:20260501\nSUMMARY:Hari Buruh Internasional\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260514@7mit.org\nDTSTART;VALUE=DATE:20260514\nSUMMARY:Kenaikan Yesus Kristus\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260515@7mit.org\nDTSTART;VALUE=DATE:20260515\nSUMMARY:Cuti Bersama Kenaikan Yesus Kristus\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260527@7mit.org\nDTSTART;VALUE=DATE:20260527\nSUMMARY:Idul Adha 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260528@7mit.org\nDTSTART;VALUE=DATE:20260528\nSUMMARY:Cuti Bersama Idul Adha 1447 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260531@7mit.org\nDTSTART;VALUE=DATE:20260531\nSUMMARY:Hari Raya Waisak 2570 BE\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260601@7mit.org\nDTSTART;VALUE=DATE:20260601\nSUMMARY:Hari Lahir Pancasila\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260616@7mit.org\nDTSTART;VALUE=DATE:20260616\nSUMMARY:Tahun Baru Islam 1448 H\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260817@7mit.org\nDTSTART;VALUE=DATE:20260817\nSUMMARY:Hari Kemerdekaan Republik Indonesia\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20260825@7mit.org\nDTSTART;VALUE=DATE:20260825\nSUMMARY:Maulid Nabi Muhammad SAW\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20261224@7mit.org\nDTSTART;VALUE=DATE:20261224\nSUMMARY:Cuti Bersama Natal\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20261225@7mit.org\nDTSTART;VALUE=DATE:20261225\nSUMMARY:Hari Raya Natal\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20270101@7mit.org\nDTSTART;VALUE=DATE:20270101\nSUMMARY:Tahun Baru 2027 Masehi\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20270501@7mit.org\nDTSTART;VALUE=DATE:20270501\nSUMMARY:Hari Buruh Internasional\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20270601@7mit.org\nDTSTART;VALUE=DATE:20270601\nSUMMARY:Hari Lahir Pancasila\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20270817@7mit.org\nDTSTART;VALUE=DATE:20270817\nSUMMARY:Hari Kemerdekaan Republik Indonesia\nEND:VEVENT\nBEGIN:VEVENT\nUID:libur-20271225@7mit.org\nDTSTART;VALUE=DATE:20271225\nSUMMARY:Hari Raya Natal\nEND:VEVENT\nEND:VCALENDAR";
 </script>
+<style id="k7-dues-installment-v145">
+.dues-installment{margin:0 0 12px;padding:12px;border:1px solid var(--line,#e3e8f0);border-radius:14px;background:var(--surface-2,#f8fafc);display:grid;gap:8px}
+.dues-inst-bar{height:8px;border-radius:999px;background:rgba(148,163,184,.25);overflow:hidden}
+.dues-inst-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .35s ease}
+.dues-inst-progress small{display:block;margin-top:6px;font-size:10px;font-weight:800;color:var(--muted,#64748b)}
+.dues-amount-label{font-size:10px;font-weight:900;color:var(--muted,#64748b)}
+.dues-amount-input{width:100%;height:46px;border:1px solid var(--border,#dbe3ec);border-radius:12px;background:var(--surface,#fff);color:var(--text,#17233a);font:inherit;font-size:16px;font-weight:950;padding:0 12px}
+.dues-amount-input:focus{outline:2px solid var(--accent-primary,#2563eb);outline-offset:1px}
+.dues-amount-input:disabled{opacity:.55;cursor:not-allowed}
+.dues-amount-quick{display:flex;gap:6px;flex-wrap:wrap}
+.dues-amount-quick button{min-height:32px;padding:0 11px;border-radius:999px;border:1px solid var(--line,#e3e8f0);background:var(--surface,#fff);color:var(--ink,#172033);font:inherit;font-size:10px;font-weight:900;cursor:pointer}
+.dues-amount-quick button.on{background:var(--accent-primary,#2563eb);border-color:transparent;color:#fff}
+.dues-amount-hint{font-size:10px;color:var(--muted,#64748b)}
+.dues-amount-hint.error{color:#b42318;font-weight:800}
+.dues-installment.done .dues-amount-quick{display:none}
+</style>
+<style id="k7-cmdk-v146">
+/* ===== V146 · Pencarian cepat (Ctrl/⌘ + K) + poles ===== */
+.k7-cmdk-btn{display:flex;align-items:center;gap:9px;width:100%;margin:0 0 10px;min-height:40px;padding:0 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:inherit;font:inherit;font-size:12px;font-weight:800;cursor:pointer;text-align:left;transition:background .15s,transform .12s}
+.k7-cmdk-btn:hover{background:rgba(255,255,255,.18)}
+.k7-cmdk-btn svg{width:15px;height:15px;opacity:.85}
+.k7-cmdk-btn kbd{margin-left:auto;font:inherit;font-size:10px;opacity:.75;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:1px 6px}
+.k7-cmdk{position:fixed;inset:0;z-index:2147483100;display:none;align-items:flex-start;justify-content:center;padding:10vh 14px 14px;background:rgba(15,23,42,.45)}
+.k7-cmdk.open{display:flex;animation:k7CmdIn .15s ease both}
+@keyframes k7CmdIn{from{opacity:0}to{opacity:1}}
+.k7-cmdk-box{width:min(560px,100%);max-height:72vh;display:flex;flex-direction:column;border-radius:20px;background:var(--surface,#fff);color:var(--ink,#172033);border:1px solid var(--line,#e3e8f0);box-shadow:0 30px 80px rgba(15,23,42,.35);overflow:hidden}
+.k7-cmdk-in{display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--line,#e3e8f0)}
+.k7-cmdk-in input{flex:1;min-height:54px;border:0;outline:0;background:transparent;color:inherit;font:inherit;font-size:15px;transform:none!important}
+.k7-cmdk-in svg{width:18px;height:18px;color:var(--muted,#667085)}
+.k7-cmdk-list{overflow:auto;padding:8px}
+.k7-cmdk-item{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:12px;background:transparent;color:inherit;font:inherit;font-size:13px;font-weight:750;cursor:pointer;text-align:left}
+.k7-cmdk-item.on,.k7-cmdk-item:hover{background:color-mix(in srgb,var(--blue,#2563eb) 12%,transparent)}
+.k7-cmdk-item svg{width:16px;height:16px;color:var(--muted,#667085);flex:0 0 auto}
+.k7-cmdk-item small{margin-left:auto;color:var(--muted,#667085);font-size:10px;font-weight:700}
+.k7-cmdk-empty{padding:26px;text-align:center;color:var(--muted,#667085);font-size:12px}
+.k7-cmdk-foot{display:flex;gap:14px;padding:9px 16px;border-top:1px solid var(--line,#e3e8f0);color:var(--muted,#667085);font-size:10px}
+/* poles ringan */
+@media(max-width:640px){
+  .page>.topbar .title h2{font-size:clamp(20px,6vw,26px)!important;line-height:1.15}
+  .student-access-banner{padding:11px 13px!important}
+  .student-access-banner p{display:none}
+}
+
+</style>
+<style id="k7-motion-v147">
+/* ===== V147 · GERAK SOFT + PATUH REDUCE MOTION ===== */
+:root{--k7-soft:cubic-bezier(.22,.9,.28,1);--k7-t-fast:.16s;--k7-t:.28s;--k7-t-slow:.5s}
+
+/* ---------- animasi soft (hanya jika pengguna TIDAK meminta mengurangi gerakan) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  html:not(.k7-reduce) .k7-rv{opacity:0;transform:translateY(14px) scale(.985)}
+  html:not(.k7-reduce) .k7-rv.k7-in{opacity:1;transform:none;transition:opacity var(--k7-t-slow) var(--k7-soft) var(--k7-d,0ms),transform var(--k7-t-slow) var(--k7-soft) var(--k7-d,0ms)}
+
+  /* sidebar: ikon bergeser halus, indikator aktif muncul lembut */
+  html:not(.k7-reduce) .nav button{transition:background var(--k7-t) ease,color var(--k7-t) ease,transform var(--k7-t) var(--k7-soft),box-shadow var(--k7-t) ease}
+  html:not(.k7-reduce) .nav button .nav-icon{transition:transform var(--k7-t) var(--k7-soft)}
+  html:not(.k7-reduce) .nav button:hover .nav-icon{transform:translateX(2px) scale(1.06)}
+  html:not(.k7-reduce) .nav button.active .nav-icon{animation:k7IconPop .45s var(--k7-soft) both}
+  @keyframes k7IconPop{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+  /* modal & menu: fade + naik halus; backdrop fade */
+  html:not(.k7-reduce) .modal-card,html:not(.k7-reduce) .k7-cmdk-box,html:not(.k7-reduce) .dues-modal{animation:k7SoftPop .3s var(--k7-soft) both}
+  @keyframes k7SoftPop{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+
+  /* badge / chip: muncul dengan pop kecil */
+  html:not(.k7-reduce) .st-badge,html:not(.k7-reduce) .dues-status,html:not(.k7-reduce) .portal-account-chip{animation:k7Fade .35s ease both}
+  @keyframes k7Fade{from{opacity:0}to{opacity:1}}
+
+  /* centang To-Do & bar progres */
+  html:not(.k7-reduce) .st-todo.done .st-check{animation:k7Check .32s var(--k7-soft) both}
+  @keyframes k7Check{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+  html:not(.k7-reduce) .st-todo{animation:k7Rise .32s var(--k7-soft) both}
+  html:not(.k7-reduce) .st-list>*:nth-child(2){animation-delay:.04s}
+  html:not(.k7-reduce) .st-list>*:nth-child(3){animation-delay:.08s}
+  html:not(.k7-reduce) .st-list>*:nth-child(n+4){animation-delay:.12s}
+  html:not(.k7-reduce) .st-today .st-t{animation:k7Rise .4s var(--k7-soft) both}
+  html:not(.k7-reduce) .st-today .st-t:nth-child(2){animation-delay:.05s}
+  html:not(.k7-reduce) .st-today .st-t:nth-child(3){animation-delay:.1s}
+  html:not(.k7-reduce) .st-today .st-t:nth-child(4){animation-delay:.15s}
+
+  /* fokus input lembut */
+  html:not(.k7-reduce) input,html:not(.k7-reduce) select,html:not(.k7-reduce) textarea{transition:border-color var(--k7-t-fast) ease,box-shadow var(--k7-t-fast) ease,background var(--k7-t-fast) ease}
+
+  /* nilai (hijau/merah) berdenyut sangat halus sekali saat berubah */
+  html:not(.k7-reduce) .k7-bump{animation:k7Bump .5s var(--k7-soft)}
+  @keyframes k7Bump{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+}
+
+/* ---------- PATUH REDUCE MOTION: sistem (prefers-reduced-motion) ATAU pilihan manual (html.k7-reduce) ---------- */
+@media (prefers-reduced-motion:reduce){
+  html *,html *::before,html *::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  html .k7-rv{opacity:1!important;transform:none!important}
+  html .k7-tap,html .k7-top{display:none!important}
+}
+html.k7-reduce *,html.k7-reduce *::before,html.k7-reduce *::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+html.k7-reduce .k7-rv{opacity:1!important;transform:none!important}
+html.k7-reduce .k7-tap{display:none!important}
+
+</style>
+<script id="k7-motion-v147-js">
+/* V147 · Pengatur gerak terpusat: patuh prefers-reduced-motion (+ pilihan manual), scroll halus aman,
+   reveal-on-scroll dan count-up yang lembut. Semua efek mati total saat pengurangan gerak aktif. */
+(()=>{
+  'use strict';
+  if(window.k7Motion)return;
+  const root=document.documentElement,mq=matchMedia('(prefers-reduced-motion: reduce)'),KEY='k7-motion';
+  const getPref=()=>{try{return localStorage.getItem(KEY)==='reduce'?'reduce':'auto'}catch{return 'auto'}};
+  const reduced=()=>mq.matches||getPref()==='reduce';
+  const apply=()=>{root.classList.toggle('k7-reduce',reduced());root.dataset.motion=reduced()?'reduce':'full';
+    try{if(window.Chart?.defaults)window.Chart.defaults.animation=reduced()?false:{duration:600}}catch{}
+    try{window.dispatchEvent(new CustomEvent('k7-motion-change',{detail:{reduced:reduced()}}))}catch{}
+    if(reduced())finishAll()};
+  const set=p=>{try{p==='reduce'?localStorage.setItem(KEY,'reduce'):localStorage.removeItem(KEY)}catch{}apply()};
+  (mq.addEventListener?mq.addEventListener('change',apply):mq.addListener&&mq.addListener(apply));
+
+  /* scroll halus -> instan saat gerak dikurangi (mencakup semua pemanggilan di aplikasi) */
+  const fix=o=>(reduced()&&o&&typeof o==='object'&&o.behavior==='smooth')?{...o,behavior:'auto'}:o;
+  const wrap=(obj,name)=>{const orig=obj&&obj[name];if(typeof orig!=='function'||orig.__k7)return;const w=function(...a){if(a[0]&&typeof a[0]==='object')a[0]=fix(a[0]);return orig.apply(this,a)};w.__k7=1;obj[name]=w};
+  ['scrollTo','scroll','scrollBy'].forEach(n=>{wrap(window,n);wrap(Element.prototype,n)});
+  wrap(Element.prototype,'scrollIntoView');
+
+  /* ---------- reveal saat scroll (hanya untuk kartu di bawah layar) ---------- */
+  const REV='.panel,.stat,.list-card,.news-card,.document-card,.achievement-card,.finance-card,.inventory-card,.poll-card,.target-card,.appreciation-card,.st-card';
+  let io=null,pending=new Set(),safety=0;
+  function finishAll(){pending.forEach(el=>{el.classList.add('k7-in')});pending.clear();document.querySelectorAll('.k7-rv').forEach(el=>el.classList.remove('k7-rv','k7-in'))}
+  function observer(){
+    if(io||!('IntersectionObserver' in window))return io;
+    io=new IntersectionObserver(es=>{
+      let n=0;
+      es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;io.unobserve(el);pending.delete(el);el.style.setProperty('--k7-d',Math.min(5,n++)*60+'ms');el.classList.add('k7-in');
+        const done=()=>{el.classList.remove('k7-rv','k7-in');el.style.removeProperty('--k7-d');el.removeEventListener('transitionend',done)};el.addEventListener('transitionend',done);setTimeout(done,1200)});
+    },{threshold:.06,rootMargin:'0px 0px -5% 0px'});
+    return io;
+  }
+  function scan(){
+    if(reduced())return;
+    const page=document.querySelector('main .page.active');if(!page||!observer())return;
+    const vh=innerHeight;let any=false;
+    page.querySelectorAll(REV).forEach(el=>{
+      if(el.dataset.k7rv)return;el.dataset.k7rv='1';
+      if(el.parentElement===page||el.closest('.modal,.modal-card,[aria-hidden="true"],.priority-summary-slider,[hidden]'))return;
+      const r=el.getBoundingClientRect();if(r.height<20||r.top<vh*.92)return; // yang sudah terlihat tidak dianimasikan ulang
+      el.classList.add('k7-rv');pending.add(el);io.observe(el);any=true;
+    });
+    if(any){clearTimeout(safety);safety=setTimeout(finishAll,5000)} // pengaman: tidak ada yang tersembunyi selamanya
+  }
+
+  /* ---------- count-up angka ringkasan (sekali per nilai) ---------- */
+  const CU='.stat-value,.stat>b,.achievement-stat b,.st-t b';
+  const seen=new Map();
+  function countUp(el){
+    if(reduced()||el.dataset.k7cu===el.textContent||el.closest('[hidden]'))return;
+    const txt=el.textContent.trim(),m=/^(\D{0,4}?)(\d[\d.]*)(\D{0,14})$/.exec(txt);if(!m)return;
+    const target=parseInt(m[2].replace(/\./g,''),10);if(!Number.isFinite(target)||target<2||target>1e9)return;
+    const key=(el.closest('.stat,.achievement-stat,.st-t')?.querySelector('small,.label,span')?.textContent||'')+'|'+m[1]+'|'+m[3];
+    if(seen.get(key)===target){el.dataset.k7cu=txt;return}
+    seen.set(key,target);el.dataset.k7cu=txt;
+    const grouped=m[2].includes('.'),t0=performance.now(),dur=Math.min(900,350+Math.log10(target+1)*160);
+    const fmt=v=>grouped?v.toLocaleString('id-ID'):String(v);
+    let last='';
+    (function step(now){
+      if(reduced()||!el.isConnected){if(el.textContent===last)el.textContent=txt;return}
+      if(el.textContent!==last&&last!==''){return} // aplikasi menimpa teks -> hentikan, jangan melawan
+      const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);
+      last=m[1]+fmt(Math.round(target*e))+m[3];el.textContent=last;
+      if(p<1)requestAnimationFrame(step);else{el.textContent=txt;last=txt}
+    })(t0);
+  }
+  function scanCounts(){if(reduced()||document.hidden)return;const page=document.querySelector('main .page.active');if(!page)return;page.querySelectorAll(CU).forEach(el=>{const r=el.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)countUp(el)})}
+
+  const tickScan=()=>{scan();scanCounts()};
+  const mo=new MutationObserver(()=>{clearTimeout(mo.t);mo.t=setTimeout(tickScan,90)});
+  function boot(){
+    apply();
+    const main=document.querySelector('main');if(main)mo.observe(main,{subtree:true,attributes:true,attributeFilter:['class']});
+    document.addEventListener('click',e=>{if(e.target.closest?.('#nav [data-page]'))setTimeout(tickScan,120)},true);
+    setInterval(tickScan,1800);setTimeout(tickScan,600);
+  }
+  window.k7Motion={reduced,set,get:getPref,scan:tickScan};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+
+</script>
+<script id="k7-cmdk-v146-js">
+/* V146 · Pencarian cepat: Ctrl/⌘+K atau tombol "Cari menu". Mencari semua menu portal. */
+(()=>{
+  'use strict';
+  if(window.__k7cmdk)return;window.__k7cmdk=1;
+  const $=(s,r=document)=>r.querySelector(s);
+  const norm=v=>String(v||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const nav=$('#nav');if(!nav)return;
+  const box=document.createElement('div');
+  box.className='k7-cmdk';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','Pencarian cepat');
+  box.innerHTML=`<div class="k7-cmdk-box"><div class="k7-cmdk-in"><i data-lucide="search"></i><input type="search" placeholder="Cari menu… (mis. keuangan, denah, catatan)" autocomplete="off" aria-label="Cari menu"></div><div class="k7-cmdk-list" role="listbox"></div><div class="k7-cmdk-foot"><span>↑↓ pilih</span><span>Enter buka</span><span>Esc tutup</span></div></div>`;
+  document.body.appendChild(box);
+  const input=$('input',box),list=$('.k7-cmdk-list',box);
+  let items=[],sel=0;
+  const collect=()=>[...nav.querySelectorAll('button[data-page]')].filter(b=>b.offsetParent!==null||true).map(b=>({page:b.dataset.page,label:b.textContent.replace(/\s+/g,' ').trim().replace(/\bBeta\b/,'').trim(),icon:b.querySelector('[data-lucide]')?.getAttribute('data-lucide')||'arrow-right'}));
+  const score=(q,l)=>{l=norm(l);if(!q)return 1;if(l.startsWith(q))return 3;if(l.includes(q))return 2;let i=0;for(const ch of l){if(ch===q[i])i++;if(i===q.length)return 1}return 0};
+  function render(){
+    const q=norm(input.value.trim()),all=collect();const mr=window.k7Motion&&window.k7Motion.get()==='reduce';all.push({act:'motion',label:mr?'Nyalakan animasi':'Matikan animasi (kurangi gerakan)',icon:'wind'});
+    items=all.map(x=>({...x,s:score(q,x.label)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+    if(sel>=items.length)sel=0;
+    list.innerHTML=items.length?items.map((x,i)=>`<button class="k7-cmdk-item ${i===sel?'on':''}" data-i="${i}" role="option"><i data-lucide="${x.icon}"></i>${x.label}<small>${x.act?'Atur':'Buka'}</small></button>`).join(''):'<div class="k7-cmdk-empty">Tidak ada menu yang cocok.</div>';
+    try{window.lucide?.createIcons?.()}catch{}
+    list.querySelector('.on')?.scrollIntoView({block:'nearest'});
+  }
+  function open(){box.classList.add('open');input.value='';sel=0;render();setTimeout(()=>input.focus(),20)}
+  function close(){box.classList.remove('open')}
+  function pick(i){const it=items[i];if(!it)return;close();if(it.act==='motion'){const m=window.k7Motion;m&&m.set(m.get()==='reduce'?'auto':'reduce');return}const b=nav.querySelector(`button[data-page="${it.page}"]`);b?.click()}
+  input.addEventListener('input',()=>{sel=0;render()});
+  input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(items.length-1,sel+1);render()}else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(0,sel-1);render()}else if(e.key==='Enter'){e.preventDefault();pick(sel)}else if(e.key==='Escape'){close()}});
+  list.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)pick(+b.dataset.i)});
+  box.addEventListener('click',e=>{if(e.target===box)close()});
+  document.addEventListener('keydown',e=>{
+    const typing=/^(input|textarea|select)$/i.test(e.target?.tagName||'')||e.target?.isContentEditable;
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();box.classList.contains('open')?close():open()}
+    else if(e.key==='/'&&!typing&&!box.classList.contains('open')){e.preventDefault();open()}
+    else if(e.key==='Escape'&&box.classList.contains('open'))close();
+  });
+  const btn=document.createElement('button');
+  btn.type='button';btn.className='k7-cmdk-btn';btn.innerHTML='<i data-lucide="search"></i> Cari menu <kbd>Ctrl K</kbd>';
+  btn.addEventListener('click',open);
+  nav.before(btn);
+  try{window.lucide?.createIcons?.()}catch{}
+  window.k7Cmdk={open,close};
+})();
+
+</script>
 <style id="k7-cm3d-v143">
 /* ===== V143 · Denah Kelas 2D/3D ===== */
 .cm3d-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--line,#e3e8f0)}
@@ -29119,7 +29349,7 @@ html.k7-lite .cm3d-pop{animation:none}
     const camera=new T.PerspectiveCamera(45,1,0.05,200);
     S.scene=scene;S.camera=camera;
     const controls=new T.OrbitControls(camera,renderer.domElement);
-    controls.enableDamping=true;controls.dampingFactor=0.09;controls.screenSpacePanning=false;
+    controls.enableDamping=!window.k7Motion?.reduced();window.addEventListener('k7-motion-change',()=>{try{S.controls.enableDamping=!window.k7Motion.reduced()}catch{}});controls.dampingFactor=0.09;controls.screenSpacePanning=false;
     controls.maxPolarAngle=Math.PI*0.495;controls.minDistance=0.6;
     controls.addEventListener('start',()=>{S.tween=null;kick()});
     controls.addEventListener('change',()=>{S.dirty=true;kick()});
@@ -29271,7 +29501,7 @@ html.k7-lite .cm3d-pop{animation:none}
     if(!p)return;
     S.controls.minDistance=0.05;
     if(!animate){S.camera.position.copy(p.p);S.controls.target.copy(p.t);S.controls.update();S.dirty=true;return kick()}
-    S.tween={t0:performance.now(),dur:lite()?1:850,p0:S.camera.position.clone(),t0v:S.controls.target.clone(),p1:p.p,t1:p.t};kick();
+    S.tween={t0:performance.now(),dur:(lite()||window.k7Motion?.reduced())?1:850,p0:S.camera.position.clone(),t0v:S.controls.target.clone(),p1:p.p,t1:p.t};kick();
   }
   function goto(id,animate=true){
     if(!S.ready)return;
@@ -29389,96 +29619,6 @@ html.k7-lite .cm3d-pop{animation:none}
   let saved='2d';try{saved=localStorage.getItem('k7-classmap-mode')||'2d'}catch{}
   window.__cm3d=S;
   if(saved==='3d')setTimeout(()=>{if($('#classMap')?.classList.contains('active'))setMode('3d')},0);
-})();
-
-</script>
-<style id="k7-dues-installment-v145">
-.dues-installment{margin:0 0 12px;padding:12px;border:1px solid var(--line,#e3e8f0);border-radius:14px;background:var(--surface-2,#f8fafc);display:grid;gap:8px}
-.dues-inst-bar{height:8px;border-radius:999px;background:rgba(148,163,184,.25);overflow:hidden}
-.dues-inst-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .35s ease}
-.dues-inst-progress small{display:block;margin-top:6px;font-size:10px;font-weight:800;color:var(--muted,#64748b)}
-.dues-amount-label{font-size:10px;font-weight:900;color:var(--muted,#64748b)}
-.dues-amount-input{width:100%;height:46px;border:1px solid var(--border,#dbe3ec);border-radius:12px;background:var(--surface,#fff);color:var(--text,#17233a);font:inherit;font-size:16px;font-weight:950;padding:0 12px}
-.dues-amount-input:focus{outline:2px solid var(--accent-primary,#2563eb);outline-offset:1px}
-.dues-amount-input:disabled{opacity:.55;cursor:not-allowed}
-.dues-amount-quick{display:flex;gap:6px;flex-wrap:wrap}
-.dues-amount-quick button{min-height:32px;padding:0 11px;border-radius:999px;border:1px solid var(--line,#e3e8f0);background:var(--surface,#fff);color:var(--ink,#172033);font:inherit;font-size:10px;font-weight:900;cursor:pointer}
-.dues-amount-quick button.on{background:var(--accent-primary,#2563eb);border-color:transparent;color:#fff}
-.dues-amount-hint{font-size:10px;color:var(--muted,#64748b)}
-.dues-amount-hint.error{color:#b42318;font-weight:800}
-.dues-installment.done .dues-amount-quick{display:none}
-</style>
-<style id="k7-cmdk-v146">
-/* ===== V146 · Pencarian cepat (Ctrl/⌘ + K) + poles ===== */
-.k7-cmdk-btn{display:flex;align-items:center;gap:9px;width:100%;margin:0 0 10px;min-height:40px;padding:0 12px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:inherit;font:inherit;font-size:12px;font-weight:800;cursor:pointer;text-align:left;transition:background .15s,transform .12s}
-.k7-cmdk-btn:hover{background:rgba(255,255,255,.18)}
-.k7-cmdk-btn svg{width:15px;height:15px;opacity:.85}
-.k7-cmdk-btn kbd{margin-left:auto;font:inherit;font-size:10px;opacity:.75;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:1px 6px}
-.k7-cmdk{position:fixed;inset:0;z-index:2147483100;display:none;align-items:flex-start;justify-content:center;padding:10vh 14px 14px;background:rgba(15,23,42,.45)}
-.k7-cmdk.open{display:flex;animation:k7CmdIn .15s ease both}
-@keyframes k7CmdIn{from{opacity:0}to{opacity:1}}
-.k7-cmdk-box{width:min(560px,100%);max-height:72vh;display:flex;flex-direction:column;border-radius:20px;background:var(--surface,#fff);color:var(--ink,#172033);border:1px solid var(--line,#e3e8f0);box-shadow:0 30px 80px rgba(15,23,42,.35);overflow:hidden}
-.k7-cmdk-in{display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--line,#e3e8f0)}
-.k7-cmdk-in input{flex:1;min-height:54px;border:0;outline:0;background:transparent;color:inherit;font:inherit;font-size:15px;transform:none!important}
-.k7-cmdk-in svg{width:18px;height:18px;color:var(--muted,#667085)}
-.k7-cmdk-list{overflow:auto;padding:8px}
-.k7-cmdk-item{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;padding:0 12px;border:0;border-radius:12px;background:transparent;color:inherit;font:inherit;font-size:13px;font-weight:750;cursor:pointer;text-align:left}
-.k7-cmdk-item.on,.k7-cmdk-item:hover{background:color-mix(in srgb,var(--blue,#2563eb) 12%,transparent)}
-.k7-cmdk-item svg{width:16px;height:16px;color:var(--muted,#667085);flex:0 0 auto}
-.k7-cmdk-item small{margin-left:auto;color:var(--muted,#667085);font-size:10px;font-weight:700}
-.k7-cmdk-empty{padding:26px;text-align:center;color:var(--muted,#667085);font-size:12px}
-.k7-cmdk-foot{display:flex;gap:14px;padding:9px 16px;border-top:1px solid var(--line,#e3e8f0);color:var(--muted,#667085);font-size:10px}
-/* poles ringan */
-@media(max-width:640px){
-  .page>.topbar .title h2{font-size:clamp(20px,6vw,26px)!important;line-height:1.15}
-  .student-access-banner{padding:11px 13px!important}
-  .student-access-banner p{display:none}
-}
-
-</style>
-<script id="k7-cmdk-v146-js">
-/* V146 · Pencarian cepat: Ctrl/⌘+K atau tombol "Cari menu". Mencari semua menu portal. */
-(()=>{
-  'use strict';
-  if(window.__k7cmdk)return;window.__k7cmdk=1;
-  const $=(s,r=document)=>r.querySelector(s);
-  const norm=v=>String(v||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase();
-  const nav=$('#nav');if(!nav)return;
-  const box=document.createElement('div');
-  box.className='k7-cmdk';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','Pencarian cepat');
-  box.innerHTML=`<div class="k7-cmdk-box"><div class="k7-cmdk-in"><i data-lucide="search"></i><input type="search" placeholder="Cari menu… (mis. keuangan, denah, catatan)" autocomplete="off" aria-label="Cari menu"></div><div class="k7-cmdk-list" role="listbox"></div><div class="k7-cmdk-foot"><span>↑↓ pilih</span><span>Enter buka</span><span>Esc tutup</span></div></div>`;
-  document.body.appendChild(box);
-  const input=$('input',box),list=$('.k7-cmdk-list',box);
-  let items=[],sel=0;
-  const collect=()=>[...nav.querySelectorAll('button[data-page]')].filter(b=>b.offsetParent!==null||true).map(b=>({page:b.dataset.page,label:b.textContent.replace(/\s+/g,' ').trim().replace(/\bBeta\b/,'').trim(),icon:b.querySelector('[data-lucide]')?.getAttribute('data-lucide')||'arrow-right'}));
-  const score=(q,l)=>{l=norm(l);if(!q)return 1;if(l.startsWith(q))return 3;if(l.includes(q))return 2;let i=0;for(const ch of l){if(ch===q[i])i++;if(i===q.length)return 1}return 0};
-  function render(){
-    const q=norm(input.value.trim()),all=collect();
-    items=all.map(x=>({...x,s:score(q,x.label)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
-    if(sel>=items.length)sel=0;
-    list.innerHTML=items.length?items.map((x,i)=>`<button class="k7-cmdk-item ${i===sel?'on':''}" data-i="${i}" role="option"><i data-lucide="${x.icon}"></i>${x.label}<small>Buka</small></button>`).join(''):'<div class="k7-cmdk-empty">Tidak ada menu yang cocok.</div>';
-    try{window.lucide?.createIcons?.()}catch{}
-    list.querySelector('.on')?.scrollIntoView({block:'nearest'});
-  }
-  function open(){box.classList.add('open');input.value='';sel=0;render();setTimeout(()=>input.focus(),20)}
-  function close(){box.classList.remove('open')}
-  function pick(i){const it=items[i];if(!it)return;close();const b=nav.querySelector(`button[data-page="${it.page}"]`);b?.click()}
-  input.addEventListener('input',()=>{sel=0;render()});
-  input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(items.length-1,sel+1);render()}else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(0,sel-1);render()}else if(e.key==='Enter'){e.preventDefault();pick(sel)}else if(e.key==='Escape'){close()}});
-  list.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)pick(+b.dataset.i)});
-  box.addEventListener('click',e=>{if(e.target===box)close()});
-  document.addEventListener('keydown',e=>{
-    const typing=/^(input|textarea|select)$/i.test(e.target?.tagName||'')||e.target?.isContentEditable;
-    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();box.classList.contains('open')?close():open()}
-    else if(e.key==='/'&&!typing&&!box.classList.contains('open')){e.preventDefault();open()}
-    else if(e.key==='Escape'&&box.classList.contains('open'))close();
-  });
-  const btn=document.createElement('button');
-  btn.type='button';btn.className='k7-cmdk-btn';btn.innerHTML='<i data-lucide="search"></i> Cari menu <kbd>Ctrl K</kbd>';
-  btn.addEventListener('click',open);
-  nav.before(btn);
-  try{window.lucide?.createIcons?.()}catch{}
-  window.k7Cmdk={open,close};
 })();
 
 </script>
