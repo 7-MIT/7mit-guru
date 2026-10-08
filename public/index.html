@@ -12127,7 +12127,7 @@ html[data-theme-resolved="dark"] .quiz-choice-note-v141{
     <section class="page" id="achievements">
   <header class="topbar">
     <div class="title"><h2>Tracking Prestasi</h2><p id="trkAchSub">Pantau pemenuhan target kompetisi untuk setiap siswa dalam satu semester.</p></div>
-    <div class="actions"><button class="btn" type="button" data-trk-target="achievement" hidden><i data-lucide="target"></i> Atur Target</button><button class="btn primary" type="button" data-trk-add="achievement"><i data-lucide="trophy"></i> Tambah Kompetisi</button></div>
+    <div class="actions"><button class="btn" type="button" data-trk-yearset hidden><i data-lucide="calendar-cog"></i> Atur Tahun Ajaran</button><button class="btn" type="button" data-trk-target="achievement" hidden><i data-lucide="target"></i> Atur Target</button><button class="btn primary" type="button" data-trk-add="achievement"><i data-lucide="trophy"></i> Tambah Kompetisi</button></div>
   </header>
   <div class="trk-root" id="trkAchRoot"><div class="trk-loading"><span class="k7-spin"></span> Memuat data prestasi…</div></div>
 </section>
@@ -12135,16 +12135,7 @@ html[data-theme-resolved="dark"] .quiz-choice-note-v141{
 <section class="page" id="bookTracking">
   <header class="topbar">
     <div class="title"><h2>Book Tracking</h2><p id="trkBookSub">Catat bacaan buku dan Quran setiap siswa dalam satu semester.</p></div>
-    <div class="actions"><button class="btn" type="button" data-trk-target="tab" hidden><i data-lucide="target"></i> Atur Target</button><button class="btn primary" type="button" data-trk-add="tab" id="trkBookAddBtn"><i data-lucide="book-plus"></i> Tambah Buku</button></div>
-  </header>
-  <div class="trk-tabs" role="tablist" aria-label="Jenis bacaan"><span class="trk-tab-ind" aria-hidden="true"></span><button type="button" role="tab" class="active" data-trk-tab="book"><i data-lucide="book-open"></i> Book Reading</button><button type="button" role="tab" data-trk-tab="quran"><i data-lucide="book-marked"></i> Quran Reading</button></div>
-  <div class="trk-root" id="trkBookRoot"><div class="trk-loading"><span class="k7-spin"></span> Memuat data bacaan…</div></div>
-</section>
-
-<section class="page" id="bookTracking">
-  <header class="topbar">
-    <div class="title"><h2>Book Tracking</h2><p id="trkBookSub">Catat bacaan buku dan Quran setiap siswa dalam satu semester.</p></div>
-    <div class="actions"><button class="btn" type="button" data-trk-target="tab" hidden><i data-lucide="target"></i> Atur Target</button><button class="btn primary" type="button" data-trk-add="tab" id="trkBookAddBtn"><i data-lucide="book-plus"></i> Tambah Buku</button></div>
+    <div class="actions"><button class="btn" type="button" data-trk-yearset hidden><i data-lucide="calendar-cog"></i> Atur Tahun Ajaran</button><button class="btn" type="button" data-trk-target="tab" hidden><i data-lucide="target"></i> Atur Target</button><button class="btn primary" type="button" data-trk-add="tab" id="trkBookAddBtn"><i data-lucide="book-plus"></i> Tambah Buku</button></div>
   </header>
   <div class="trk-tabs" role="tablist" aria-label="Jenis bacaan"><span class="trk-tab-ind" aria-hidden="true"></span><button type="button" role="tab" class="active" data-trk-tab="book"><i data-lucide="book-open"></i> Book Reading</button><button type="button" role="tab" data-trk-tab="quran"><i data-lucide="book-marked"></i> Quran Reading</button></div>
   <div class="trk-root" id="trkBookRoot"><div class="trk-loading"><span class="k7-spin"></span> Memuat data bacaan…</div></div>
@@ -28904,6 +28895,11 @@ html[data-theme-resolved="dark"] .trk-badge.green{background:rgba(34,197,94,.2);
 }
 
 .btn[hidden],.trk-add-in[hidden],[data-trk-target][hidden]{display:none!important}
+
+.trk-active{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:8px!important;font-size:13px!important}.trk-active svg{width:16px;height:16px;color:var(--accent-primary,#2563eb)}
+.trk-link{border:0;background:none;padding:0;color:var(--accent-primary,#2563eb);font:inherit;font-size:12.5px;font-weight:750;text-decoration:underline;cursor:pointer}
+.trk-form :disabled{opacity:.7;cursor:not-allowed;background:color-mix(in srgb,var(--theme-muted,#64748b) 10%,var(--theme-surface,#fff))}
+.btn[data-trk-yearset][hidden]{display:none!important}
 </style>
 <script id="k7-tracker-v157-js">
 (()=>{
@@ -28919,10 +28915,7 @@ const TITLE={achievement:'Kompetisi',book:'Buku',quran:'Bacaan Quran'};
 
 const store={achievement:{},book:{},quran:{},tab:'book',query:'',filter:null};
 function todayISO(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jakarta',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return`${p.find(x=>x.type==='year').value}-${p.find(x=>x.type==='month').value}-${p.find(x=>x.type==='day').value}`}
-function defaultFilter(){const [y,m]=todayISO().split('-').map(Number);return m>=7?{semester:'Semester 1',year:`${y}/${y+1}`}:{semester:'Semester 2',year:`${y-1}/${y}`}}
-function loadFilter(){try{const v=JSON.parse(localStorage.getItem('k7_trk_filter')||'null');if(v&&v.semester&&/^\d{4}\/\d{4}$/.test(v.year))return v}catch(e){}return defaultFilter()}
-function saveFilter(){try{localStorage.setItem('k7_trk_filter',JSON.stringify(store.filter))}catch(e){}}
-store.filter=loadFilter();
+store.filter=null;store.active=null;
 async function api(action,payload={}){
   const token=await window.K7Session?.getToken?.();if(!token)throw new Error('Sesi akun belum tersedia.');
   const anon=window.SUPABASE_ANON_KEY||'',ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),15000);
@@ -28946,7 +28939,8 @@ async function load(kind,{silent=false}={}){
   const root=kind==='achievement'?$('#trkAchRoot'):$('#trkBookRoot');
   if(!silent&&root&&!s.data)root.innerHTML=loadingHtml('Memuat data…');
   try{
-    s.data=await api('overview',{kind,semester:store.filter.semester,academic_year:store.filter.year});
+    s.data=await api('overview',store.filter?{kind,semester:store.filter.semester,academic_year:store.filter.year}:{kind});
+    store.active=s.data.active||store.active;if(!store.filter)store.filter={semester:s.data.semester,year:s.data.academic_year};
     s.error='';render(kind);
   }catch(e){
     s.error=e.message||'Gagal memuat.';
@@ -28980,8 +28974,13 @@ function cardHtml(kind,d,stu,idx,mineCard){
   const entries=m.list.length?m.list.map(e=>entryHtml(kind,d,e)).join(''):`<div class="trk-none">Belum ada ${kind==='achievement'?'kompetisi':kind==='book'?'buku':'bacaan'} pada semester ini.</div>`;
   return`<article class="trk-card${mineCard?' mine':''}${done?' done':''}" style="--i:${Math.min(idx,14)}" data-student="${esc(stu.name.toLowerCase())}"><div class="trk-card-head"><div><h4>${esc(stu.name)}${isMe?' <span class="trk-me">Saya</span>':''}</h4><div class="trk-sub">${esc(d.semester)} · ${esc(d.academic_year)}${m.extra?` · ${esc(m.extra)}`:''}</div></div>${status}</div>${bar(p)}<div class="trk-sub">${esc(note)}</div><div class="trk-entries">${entries}</div>${canAdd?`<button type="button" class="trk-add-in" data-trk-add="${kind}" data-student="${esc(stu.id)}"><i data-lucide="plus"></i> Tambah ${TITLE[kind].toLowerCase()}</button>`:''}</article>`;
 }
+function activeNote(d){
+  const a=d.active;if(!a)return'';
+  const same=a.semester===d.semester&&a.academic_year===d.academic_year;
+  return`<p class="trk-active"><i data-lucide="calendar-check"></i> Tahun ajaran aktif: <b>${esc(a.academic_year)} · ${esc(a.semester)}</b>${same?'':` <span class="trk-badge amber">Sedang melihat arsip ${esc(d.academic_year)} · ${esc(d.semester)}</span> <button type="button" class="trk-link" data-trk-backactive>Kembali ke aktif</button>`}</p>`;
+}
 function filterHtml(kind,d){
-  return`<section class="trk-hero"><div class="trk-hero-text"><h3>${kind==='achievement'?'Target Kompetisi Semester':kind==='book'?'Target Book Reading':'Target Quran Reading'}</h3><p>${kind==='achievement'?`Setiap siswa wajib mengikuti minimal <b>${d.target.target} kompetisi</b> pada setiap semester.`:kind==='book'?`Target: minimal <b>${d.target.target} ${esc(d.target.unit)}</b> per semester.`:`Target: minimal <b>${d.target.target} ${esc(d.target.unit)}</b> (tilawah, hafalan, atau murajaah) per semester.`}</p></div><div class="trk-filters"><label>Semester<select data-trk-semester><option${store.filter.semester==='Semester 1'?' selected':''}>Semester 1</option><option${store.filter.semester==='Semester 2'?' selected':''}>Semester 2</option></select></label><label>Tahun Ajaran<input type="text" data-trk-year value="${esc(store.filter.year)}" placeholder="2026/2027" maxlength="9"></label>${d.can_manage||kind==='achievement'?`<label class="trk-search">Cari siswa<input type="search" data-trk-search value="${esc(store.query)}" placeholder="Nama siswa…"></label>`:''}</div></section>`;
+  return`<section class="trk-hero"><div class="trk-hero-text"><h3>${kind==='achievement'?'Target Kompetisi Semester':kind==='book'?'Target Book Reading':'Target Quran Reading'}</h3><p>${kind==='achievement'?`Setiap siswa wajib mengikuti minimal <b>${d.target.target} kompetisi</b> pada setiap semester.`:kind==='book'?`Target: minimal <b>${d.target.target} ${esc(d.target.unit)}</b> per semester.`:`Target: minimal <b>${d.target.target} ${esc(d.target.unit)}</b> (tilawah, hafalan, atau murajaah) per semester.`}</p>${activeNote(d)}</div><div class="trk-filters"><label>Semester<select data-trk-semester><option${store.filter.semester==='Semester 1'?' selected':''}>Semester 1</option><option${store.filter.semester==='Semester 2'?' selected':''}>Semester 2</option></select></label><label>Tahun Ajaran<input type="text" data-trk-year value="${esc(store.filter.year)}" placeholder="2026/2027" maxlength="9"></label>${d.can_manage||kind==='achievement'?`<label class="trk-search">Cari siswa<input type="search" data-trk-search value="${esc(store.query)}" placeholder="Nama siswa…"></label>`:''}</div></section>`;
 }
 function statsHtml(kind,d){
   if(!d.can_manage&&kind!=='achievement'&&d.me){ // ringkasan pribadi untuk siswa
@@ -29014,6 +29013,7 @@ function render(kind){
   root.innerHTML=html;
   const sub=kind==='achievement'?$('#trkAchSub'):null;if(sub)sub.textContent=`Pantau pemenuhan minimal ${d.target.target} kompetisi untuk setiap siswa dalam satu semester.`;
   const tg=kind==='achievement'?$('[data-trk-target="achievement"]'):$('[data-trk-target="tab"]');if(tg)tg.hidden=!d.can_manage;
+  $$('[data-trk-yearset]').forEach(b=>{b.hidden=!d.can_set_year});
   icons();
 }
 function refreshAddBtn(){
@@ -29045,7 +29045,9 @@ function openForm(kind,{edit=null,student=null}={}){
   const stuOpts=(d.roster||[]).map(r=>({v:r.id,t:r.name}));
   const stuVal=e.student_id||student||(d.me&&d.me.id)||stuOpts[0]?.v;
   let body=d.can_manage?fld('trkStudent','Nama siswa','select',stuVal,{opts:stuOpts,span:true}):`<div class="trk-f span"><label>Atas nama</label><div class="trk-self"><i data-lucide="user-check"></i> ${esc(d.me.name)}</div></div>`;
-  const sy=fld('trkSemester','Semester','select',e.semester||f.semester,{opts:['Semester 1','Semester 2']})+fld('trkYear','Tahun ajaran','text',e.academic_year||f.year,{ph:'2026/2027',attrs:'maxlength="9"'});
+  const lock=d.can_set_year?'':' disabled title="Hanya Presiden, Wakil Presiden, atau Guru yang dapat mengubah tahun ajaran"';
+  const act=store.active||{semester:f.semester,academic_year:f.year};
+  const sy=fld('trkSemester','Semester','select',e.semester||(d.can_set_year?f.semester:act.semester),{opts:['Semester 1','Semester 2'],attrs:lock})+fld('trkYear','Tahun ajaran','text',e.academic_year||(d.can_set_year?f.year:act.academic_year),{ph:'2026/2027',attrs:'maxlength="9"'+lock});
   if(kind==='achievement'){
     body+=fld('trkCompetition','Nama kompetisi *','text',e.competition||'',{ph:'Nama lomba atau kompetisi',span:true})+fld('trkCategory','Bidang / kategori','text',e.category||'',{ph:'Akademik, olahraga, seni…'})+fld('trkLevel','Tingkat','select',e.level||'Sekolah',{opts:LEVELS})+fld('trkDate','Tanggal mengikuti','date',e.date||todayISO())+fld('trkResult','Hasil / prestasi','text',e.result||'',{ph:'Peserta, finalis, juara…'})+sy+fld('trkNotes','Catatan','textarea',e.notes||'',{ph:'Informasi tambahan',span:true});
   }else if(kind==='book'){
@@ -29093,11 +29095,29 @@ async function saveTarget(){
   try{await api('set_target',{kind,target:n});closeForm();toast('Target berhasil disimpan.');await load(kind,{silent:true})}catch(e){toast(e.message||'Gagal menyimpan target.')}
 }
 
+function openYear(){
+  const a=store.active||store.filter;if(!a)return;
+  form={kind:null,edit:null,yearMode:true};
+  $('#trkModalTitle').textContent='Atur Tahun Ajaran';
+  $('#trkModalBody').innerHTML=`<div class="trk-form">${fld('trkSetSemester','Semester aktif','select',a.semester,{opts:['Semester 1','Semester 2']})}${fld('trkSetYear','Tahun ajaran aktif','text',a.academic_year||a.year,{ph:'2026/2027',attrs:'maxlength="9"'})}<p class="trk-note span">Berlaku untuk seluruh Tracking Prestasi dan Book Tracking. Hanya Presiden, Wakil Presiden, dan Guru yang dapat mengubahnya; pengurus lain memakai pengaturan ini.</p></div>`;
+  const r=$('#trkModal');r.classList.add('open');r.setAttribute('aria-hidden','false');document.body.classList.add('dues-modal-open');icons();
+}
+async function saveYear(){
+  const semester=val('#trkSetSemester'),year=val('#trkSetYear');
+  if(!/^\d{4}\/\d{4}$/.test(year)){toast('Tahun ajaran harus seperti 2026/2027.');return}
+  try{await api('set_year',{semester,academic_year:year});closeForm();toast('Tahun ajaran aktif berhasil disimpan.');resetToActive()}catch(e){toast(e.message||'Gagal menyimpan tahun ajaran.')}
+}
+function resetToActive(){
+  store.filter=null;store.achievement.data=null;store.book.data=null;store.quran.data=null;
+  load('achievement',{silent:true});if($('#bookTracking.active'))load(store.tab,{silent:true});
+}
 /* ---------------- peristiwa ---------------- */
 document.addEventListener('click',e=>{
   const t=e.target;if(!t.closest)return;
   if(t.closest('[data-trk-close]')){closeForm();return}
-  if(t.closest('#trkSaveBtn')){form.targetMode?saveTarget():saveForm();return}
+  if(t.closest('#trkSaveBtn')){form.yearMode?saveYear():form.targetMode?saveTarget():saveForm();return}
+  if(t.closest('[data-trk-yearset]')){openYear();return}
+  if(t.closest('[data-trk-backactive]')){resetToActive();return}
   const add=t.closest('[data-trk-add]');if(add){const k=add.dataset.trkAdd==='tab'?store.tab:add.dataset.trkAdd;openForm(k,{student:add.dataset.student||null});return}
   const ed=t.closest('[data-trk-edit]');if(ed){const k=ed.dataset.kind,en=(store[k].data?.entries||[]).find(x=>x.id===ed.dataset.trkEdit);if(en)openForm(k,{edit:en});return}
   const del=t.closest('[data-trk-del]');if(del){removeEntry(del.dataset.kind,del.dataset.trkDel);return}
@@ -29112,7 +29132,7 @@ document.addEventListener('change',e=>{
   if(t.matches?.('[data-trk-semester],[data-trk-year]')){
     const sem=$('[data-trk-semester]',t.closest('.trk-root')),yr=$('[data-trk-year]',t.closest('.trk-root'));
     const y=(yr?.value||'').trim();if(!/^\d{4}\/\d{4}$/.test(y)){toast('Tahun ajaran harus seperti 2026/2027.');return}
-    store.filter={semester:sem.value,year:y};saveFilter();
+    store.filter={semester:sem.value,year:y};
     const k=t.closest('#trkAchRoot')?'achievement':store.tab;store.achievement.data=null;store.book.data=null;store.quran.data=null;load(k);return;
   }
   if(t.id==='trkSurah')updateAyatHint();
