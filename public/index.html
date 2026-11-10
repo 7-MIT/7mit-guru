@@ -26809,7 +26809,7 @@ setInterval(()=>{if(!document.hidden&&!$('#somModal')?.classList.contains('open'
     try{
       sessionStorage.setItem(INTENT,JSON.stringify({mode,expected:EXPECTED,at:Date.now()}));
       const c=await sb();
-      const redirectTo=`${location.origin}${location.pathname}?k7_google=callback`;
+      const redirectTo=`${location.origin}/auth/callback`;
       const {data,error}=await c.auth.signInWithOAuth({
         provider:'google',
         options:{redirectTo,scopes:'openid email profile',queryParams:{prompt:'select_account'}}

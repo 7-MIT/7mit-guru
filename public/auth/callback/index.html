@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Masuk dengan Google · guru.7mit</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--accent:#2563eb;--on:#fff;--ok:#16a34a;--err:#dc2626}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1020;--card:#131a2e;--ink:#e8edf8;--muted:#9aa7c2;--line:#27314d;--accent:#6aa0ff;--on:#0b1020;--ok:#4ade80;--err:#f87171}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{min-height:100vh;display:grid;place-items:center;padding:24px}
+.card{width:min(440px,100%);background:var(--card);border:1px solid var(--line);border-radius:22px;padding:32px 28px;text-align:center;box-shadow:0 18px 50px rgba(15,23,42,.12)}
+.brand{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.icon{width:56px;height:56px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.icon svg{width:28px;height:28px}
+.spin{width:28px;height:28px;border-radius:50%;border:3px solid color-mix(in srgb,var(--accent) 25%,transparent);border-top-color:var(--accent);animation:s .8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+h1{margin:0 0 8px;font-size:20px;line-height:1.3}p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.ok .icon{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}.err .icon{background:color-mix(in srgb,var(--err) 16%,transparent);color:var(--err)}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:12px;font:700 14px system-ui,sans-serif;text-decoration:none;border:1.5px solid var(--accent);background:var(--accent);color:var(--on)}
+.btn.alt{background:transparent;color:var(--accent)}.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mail{font-weight:700;color:var(--ink)}
+</style></head>
+<body><main><section class="card" id="card" role="status" aria-live="polite">
+<div class="brand">guru.7mit</div>
+<div class="icon" id="icon"><div class="spin"></div></div>
+<h1 id="t">Memverifikasi akun Google…</h1>
+<p id="m">Tunggu sebentar, kamu akan diarahkan otomatis.</p>
+<div class="actions" id="a" hidden></div>
+</section></main>
+<script>
+(function(){
+var EXPECTED='guru',SUPABASE_URL='https://lajzrempjyoqkubkumhb.supabase.co',ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhanpyZW1wanlvcWt1Ymt1bWhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4ODUzNDQsImV4cCI6MjEwMDQ2MTM0NH0.qM1qzhIPin7U1StnPP5n_0xEMRYTdl3Isy1HHahK8dQ';
+var API=SUPABASE_URL+'/functions/v1/akun-google-auth',STORAGE='k7_google_supabase_'+EXPECTED,INTENT='k7_google_oauth_intent_v1',SESSION_KEY='kelas7mit_persistent_account_session_v1';
+var ICON_OK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+var ICON_ERR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>';
+var $=function(i){return document.getElementById(i)};
+function state(kind,title,msg,actions){
+  var c=$('card');c.className='card '+kind;
+  $('icon').innerHTML=kind==='ok'?ICON_OK:kind==='err'?ICON_ERR:'<div class="spin"></div>';
+  $('t').textContent=title;$('m').textContent=msg||'';
+  var a=$('a');a.innerHTML='';a.hidden=!(actions&&actions.length);
+  (actions||[]).forEach(function(x){var l=document.createElement('a');l.className='btn'+(x.alt?' alt':'');l.href=x.href;l.textContent=x.label;a.appendChild(l)});
+}
+function clean(){try{history.replaceState(null,'',location.pathname)}catch(e){}}
+function done(){try{sessionStorage.removeItem(INTENT)}catch(e){}}
+function fail(msg,extra){clean();done();state('err','Masuk dengan Google gagal',msg,(extra||[]).concat([{label:'Kembali ke halaman masuk',href:'/'}]))}
+async function edge(token){
+  var r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON,Authorization:'Bearer '+token},body:JSON.stringify({action:'google_login',expected_account_type:EXPECTED}),cache:'no-store'});
+  var raw=await r.text(),d={};try{d=raw?JSON.parse(raw):{}}catch(e){}
+  if(!r.ok||d.ok===false)throw new Error(d.error||d.message||('HTTP '+r.status));
+  return d;
+}
+async function run(){
+  var q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.replace(/^#/,''));
+  var err=q.get('error_description')||h.get('error_description')||q.get('error')||h.get('error');
+  if(err){fail(decodeURIComponent(String(err).replace(/\+/g,' ')));return}
+  var code=q.get('code'),hasHash=h.get('access_token');
+  if(!code&&!hasHash){fail('Link callback tidak berisi kode dari Google. Mulai lagi dari halaman masuk.');return}
+  var intent=null;try{intent=JSON.parse(sessionStorage.getItem(INTENT)||'null')}catch(e){}
+  if(intent&&intent.expected&&intent.expected!==EXPECTED){fail('Login Google ini dimulai dari portal lain. Mulai lagi dari portal ini.');return}
+  var mod=await import('https://esm.sh/@supabase/supabase-js@2.57.4');
+  var c=mod.createClient(SUPABASE_URL,ANON,{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false,flowType:'pkce',storageKey:STORAGE}});
+  var session=null;
+  if(code){var x=await c.auth.exchangeCodeForSession(code);if(x.error)throw x.error;session=x.data&&x.data.session}
+  if(!session){var y=await c.auth.getSession();if(y.error)throw y.error;session=y.data&&y.data.session}
+  if(!session||!session.access_token)throw new Error('Sesi Google tidak ditemukan setelah callback. Coba masuk lagi.');
+  state('busy','Menyiapkan sesi…','Mencocokkan akun Google dengan akun.7mit.');
+  var d=await edge(session.access_token);
+  try{await c.auth.signOut()}catch(e){}
+  if(d.link_required){clean();done();state('err','Akun Google belum terhubung',(d.google&&d.google.email?d.google.email+' belum ':'Akun Google ini belum ')+'terhubung ke akun.7mit. Hubungkan dulu di akun.7mit lalu masuk lagi.',[{label:'Buka akun.7mit',href:'https://akun.7mit.org/akunmu'},{label:'Kembali',href:'/',alt:true}]);return}
+  if(!d.token||!d.profile)throw new Error('Sesi akun.7mit dari Google tidak berhasil dibuat.');
+  localStorage.setItem(SESSION_KEY,JSON.stringify({token:d.token,profile:{account_key:d.profile.account_key||'',username:d.profile.username||'',display_name:d.profile.display_name||'',role:d.profile.role||'',account_type:d.profile.account_type||''},saved_at:Date.now()}));
+  clean();done();
+  state('ok','Berhasil masuk','Halo, '+(d.profile.display_name||'selamat datang')+'. Membuka portal…',[{label:'Buka portal sekarang',href:'/'}]);
+  setTimeout(function(){location.replace('/')},900);
+}
+run().catch(function(e){fail(String((e&&e.message)||'Terjadi kesalahan saat memverifikasi akun Google.'))});
+})();
+</script></body></html>
